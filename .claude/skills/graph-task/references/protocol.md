@@ -13,6 +13,10 @@ Solve the task as a graph of bounded nodes, not as one uncontrolled long session
 - The root context is compact text. Hand large logs, broad source reads, screenshots, images and video to a separate bounded agent or to code tools. Save evidence and the index immediately.
 - A media agent receives **exact paths and questions** and returns *text, coverage, uncertainty, links to evidence files*; it does not put frames/encoded media into the root context. The root reads only targeted excerpts.
 
+### 1.1. Agent response economy
+
+- A worker returns a compact structured summary: status, artifact paths, verification verdict, actionable findings, evidence paths and next action. Target about 400 output tokens; each finding with a reproduction comes on top, about 100 tokens per finding. Never cut evidence to fit the limit. Keep details in artifacts, not in the reply.
+
 ## 2. Experimental principles
 
 From autoresearch: measure a baseline; give every node a scope and a fixed evaluator; change one thing at a time, measure, keep improvements and failed attempts; prefer fewer nodes as long as comparability is preserved.
