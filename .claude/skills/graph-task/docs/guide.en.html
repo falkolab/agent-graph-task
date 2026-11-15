@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Graph Task — user guide / Claude Code</title>
+<meta content="Illustrated guide to project task graphs, direct execution and Dynamic Workflows, evidence gates, budgets, session handoffs, and optional Advisor." name="description"/>
+<style>
+:root{color-scheme:light;--bg:#f6f7f9;--paper:#fff;--ink:#18202b;--muted:#566371;--line:#dce2e8;--teal:#007e78;--teal-soft:#e0f4f1;--blue:#3169bc;--blue-soft:#edf3fe;--amber:#b46107;--amber-soft:#fff3de;--red:#b64241;--red-soft:#fcecea;--radius:17px;--shadow:0 12px 35px rgba(25,43,65,.045)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.63 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"Helvetica Neue",Arial,sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(2.1rem,4.5vw,3.75rem);line-height:1.09;letter-spacing:-.045em;margin:16px 0 20px;max-width:850px}h2{font-size:clamp(1.55rem,2.75vw,2.05rem);line-height:1.25;letter-spacing:-.025em}h3{font-size:1.13rem;line-height:1.35}p{margin-bottom:14px}.subtle{color:var(--muted)}.small{font-size:.88rem}.eyebrow{font-size:.79rem;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:var(--teal)}.wrap{max-width:1200px;margin:auto;padding:0 28px}.site-head{background:linear-gradient(128deg,#112433 0%,#142c3d 46%,#0e4443 100%);color:#fff;padding-bottom:74px}.nav{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px 0}.brand{font-size:1rem;font-weight:850;letter-spacing:-.025em;display:flex;align-items:center;gap:10px}.mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#88e6d5;color:#143936;font-size:20px}.nav-links{display:flex;flex-wrap:wrap;gap:20px}.nav-links a{color:#d8e7eb;font-size:.85rem}.hero{padding:55px 0 0}.hero .eyebrow{color:#96e5d7}.hero p{color:#d3e3e8;max-width:740px;font-size:1.11rem;line-height:1.62}.hero-actions{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.pill{display:inline-block;border:1px solid rgba(206,244,236,.35);background:rgba(255,255,255,.075);border-radius:999px;padding:7px 13px;font-size:.85rem;color:#e0f3ef}.hero-cta{color:#0a3536;background:#b8f4e4;font-weight:750;border-radius:10px;padding:11px 15px}.hero-cta:hover{text-decoration:none;background:white}.main{margin-top:-29px;padding-bottom:90px}.lead-box,.panel,.figure,.callout,.table-wrap,.steps,.note{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow)}.lead-box{padding:29px;display:grid;grid-template-columns:1.35fr .9fr;gap:32px}.lead-box .big{font-size:1.25rem;font-weight:760;line-height:1.42;letter-spacing:-.01em}.lead-box p:last-child{margin-bottom:0}.install-tree{font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:#c5eeea;background:#102b38;border-radius:12px;padding:17px;white-space:pre-wrap;overflow-wrap:anywhere}.section{margin-top:64px;scroll-margin-top:26px}.section-header{margin-bottom:21px}.section-header p{max-width:820px;color:var(--muted)}.three-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.two-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.panel{padding:22px}.panel h3{margin:9px 0 8px}.panel p:last-child{margin-bottom:0}.kicker{color:var(--teal);font-size:.78rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.tag{display:inline-flex;align-items:center;gap:6px;background:var(--teal-soft);color:#076c61;padding:4px 9px;border-radius:7px;font-size:.76rem;font-weight:720}.tag.blue{background:var(--blue-soft);color:#235ca9}.tag.amber{background:var(--amber-soft);color:#8c5100}.tag.gray{background:#eef0f3;color:#54606c}.diagram-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px 16px;box-shadow:var(--shadow)}.diagram-shell h3{margin:0 0 6px}.diagram-shell p{margin:0 0 12px;color:var(--muted);font-size:.89rem}.diagram-scroll{overflow-x:auto;padding:6px 0 2px}svg.diagram{width:100%;height:auto;min-width:760px;display:block}svg text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}svg .node-title{font-size:18px;font-weight:800;fill:#172c39}svg .node-sub{font-size:13px;fill:#506273}svg .line{stroke:#8296a8;stroke-width:2.4;fill:none}svg .line-dash{stroke-dasharray:6 6}svg .label{font-size:13px;font-weight:800;fill:#536779}svg .control{fill:#e6f5f2;stroke:#46ab9c;stroke-width:1.5}svg .stage{fill:#eef4fd;stroke:#9cbbe7;stroke-width:1.5}svg .risk{fill:#fff2dd;stroke:#d9a95e;stroke-width:1.5}svg .finish{fill:#e9f4ed;stroke:#78b38d;stroke-width:1.5}svg .failed{fill:#fff1f0;stroke:#d88482;stroke-width:1.5}.legends{display:flex;gap:17px;flex-wrap:wrap;margin-top:6px;color:var(--muted);font-size:.82rem}.dot{display:inline-block;border-radius:3px;width:11px;height:11px;margin-right:6px;vertical-align:-1px}.divider{border:0;border-top:1px solid var(--line);margin:24px 0}.checkgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{padding:17px;background:#f7fafb;border:1px solid var(--line);border-radius:12px}.metric .number{font-size:1.55rem;font-weight:850;letter-spacing:-.04em;line-height:1.25;color:#163d43}.metric .label{font-size:.82rem;color:var(--muted);margin-top:5px}.callout{padding:18px 21px;margin-top:18px;border-left:4px solid var(--teal)}.callout.warn{border-left-color:var(--amber);background:#fffdfa}.callout.danger{border-left-color:var(--red);background:#fffcfc}.callout p:last-child{margin-bottom:0}.table-wrap{overflow-x:auto}.table-wrap table{width:100%;min-width:600px;border-collapse:collapse;text-align:left;font-size:.92rem}.table-wrap th{background:#f2f6f8;color:#334b5c;font-weight:800}.table-wrap th,.table-wrap td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}.table-wrap tr:last-child td{border-bottom:none}.table-wrap td:first-child{font-weight:750}.good{color:#157b64;font-weight:780}.bad{color:#b13b3b;font-weight:780}.warn-t{color:#a16200;font-weight:780}.steps{counter-reset:step;padding:10px 25px}.step{position:relative;padding:16px 8px 16px 45px;border-bottom:1px solid var(--line)}.step:last-child{border:0}.step:before{counter-increment:step;content:counter(step);position:absolute;left:1px;top:17px;width:28px;height:28px;display:grid;place-items:center;color:#fff;background:var(--teal);border-radius:9px;font-weight:750;font-size:.8rem}.step h3{margin:0 0 7px}.step p{margin-bottom:0}.code{background:#0e2230;color:#daf0ef;border-radius:12px;padding:18px 20px;font:13.5px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0}.code b{color:#7ce0cb}.note{padding:17px 20px;background:#f8fcfd}.note h3{margin:0 0 6px}.note p:last-child{margin:0}.file-strip{display:flex;flex-wrap:wrap;gap:9px}.file-chip{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:white;font:12px ui-monospace,SFMono-Regular,Consolas,monospace}.timeline{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:13px 0}.timeline span{background:var(--blue-soft);color:#285a96;border:1px solid #b6d0ee;border-radius:8px;padding:6px 10px;font-size:.84rem;font-weight:750}.timeline i{color:#8da0ac;font-style:normal}.breakout{background:#e8f5f1;border:1px solid #b9ddd4;border-radius:var(--radius);padding:25px}.breakout h2{margin-bottom:12px}.footer{background:#152837;color:#baccd4;padding:32px 0;font-size:.85rem}.footer a{color:#b2e8df}.footer strong{color:#fff}details{border:1px solid var(--line);border-radius:11px;background:white;padding:13px 18px;margin-bottom:10px}summary{cursor:pointer;font-weight:750}details p{margin-top:10px;color:var(--muted)}.cols-desc{display:grid;grid-template-columns:1fr 1fr;gap:20px}.thin{font-weight:500;color:var(--muted)}.flow-caption{font-size:.82rem;color:var(--muted);text-align:center;margin-top:14px}.print-only{display:none}
+@media(max-width:870px){.lead-box{grid-template-columns:1fr}.three-cols{grid-template-columns:1fr}.checkgrid{grid-template-columns:repeat(2,1fr)}.cols-desc{grid-template-columns:1fr}.nav-links{gap:10px}.site-head{padding-bottom:60px}.hero{padding-top:29px}}
+@media(max-width:650px){.wrap{padding:0 17px}.nav{align-items:flex-start;flex-direction:column}.nav-links{gap:14px}.two-cols{grid-template-columns:1fr}.section{margin-top:47px}.lead-box{padding:20px}.panel,.diagram-shell{padding:18px}.hero p{font-size:1rem}.checkgrid{grid-template-columns:repeat(2,1fr)}.metric{padding:12px}}
+@media print{body{background:#fff;font-size:12px}h1{font-size:30px}h2{font-size:23px}.site-head{background:#fff;color:var(--ink);padding:0}.site-head .wrap{border-bottom:2px solid #334}.hero{padding:12px 0}.hero p{color:var(--muted)}.hero .eyebrow{color:var(--teal)}.nav-links,.hero-actions{display:none}.main{margin:0}.section{margin-top:26px;break-inside:avoid}.panel,.lead-box,.table-wrap,.diagram-shell{box-shadow:none}.diagram-scroll{overflow:visible}svg.diagram{min-width:0}.footer{background:white;color:var(--ink)}.callout,.panel{break-inside:avoid}}
+
+.scroll-tip{display:none;font-size:.83rem;color:var(--muted);margin:0 0 8px}
+@media(max-width:720px){.diagram-scroll svg.diagram{min-width:1000px}.scroll-tip{display:block}}
+</style>
+</head>
+<body>
+<header class="site-head">
+<div class="wrap">
+<div class="nav"><div class="brand"><span class="mark">◇</span> GRAPH TASK <span style="font-size:.73rem;font-weight:500;color:#a3bcc3">/ Claude Code</span></div>
+<nav aria-label="Contents" class="nav-links"><a href="#architecture">Architecture</a><a href="#execution-modes">Two modes</a><a href="#lifecycle">Process</a><a href="#controls">Verification</a><a href="#budget">Resources</a><a href="#start">Get started</a><a href="#advisor">Advisor</a><a href="guide.ru.html" style="border:1px solid rgba(206,244,236,.45);padding:2px 9px;border-radius:7px" title="Русская версия">RU</a></nav>
+</div>
+<div class="hero"><div class="eyebrow">Project skill · Human guide</div>
+<h1>Complex work belongs in a controlled graph, not an endless chat.</h1>
+<p>A visual guide to how <strong>/graph-task</strong> plans work, breaks it into bounded nodes, accepts results only with evidence, and makes it possible to continue from another session.</p>
+<div class="hero-actions"><a class="hero-cta" href="#start">Get started →</a><span class="pill">Project-local only</span><span class="pill">Advisor is separate</span><span class="pill">Subagents are optional</span></div>
+</div>
+</div>
+</header>
+<main class="wrap main">
+<div class="lead-box">
+<div><div class="eyebrow">At a glance</div><p class="big">The agent needs only <strong>two instruction files</strong>. The Russian and English guides are for human readers.</p>
+<p>The agent reads <strong>SKILL.md</strong> and <strong>references/protocol.md</strong>. It <strong>does not need to open the guide</strong> to perform the task, so the manual adds no required context overhead. The HTML does not change skill behavior.</p>
+<div class="file-strip"><span class="file-chip">⚙ SKILL.md <span class="good">execution</span></span><span class="file-chip">⚙ protocol.md <span class="good">rules</span></span><span class="file-chip">◉ HTML guides <span class="thin">human guide</span></span></div>
+</div>
+<div class="install-tree">graph-task/
+├── SKILL.md
+├── references/protocol.md
+└── docs/
+    ├── guide.ru.html    (RU)
+    └── guide.en.html    (EN)
+
+agent: SKILL.md + protocol.md
+human: guide.ru.html / guide.en.html</div>
+</div>
+<section class="section" id="architecture">
+<div class="section-header"><div class="eyebrow">01 / Architecture</div><h2>Responsibilities and boundaries</h2><p>The skill defines how work proceeds. The protocol defines mandatory quality rules. The execution mechanism is chosen for the task. Advisor is not part of the skill.</p></div>
+<div class="three-cols">
+<div class="panel"><span class="tag">ENTRY POINT</span><h3>Skill /graph-task</h3><p>Receives the request, binds the contract, creates the graph, and follows the verification stages. Loaded <strong>only when invoked explicitly</strong>.</p></div>
+<div class="panel"><span class="tag blue">RULES</span><h3>protocol.md</h3><p>Detailed rules for baseline measurements, permissions, artifact versions, gates, reviews, limits, budgets, stopping, and resumption.</p></div>
+<div class="panel"><span class="tag amber">EXECUTION</span><h3>Tools / Workflow</h3><p>Direct tool calls, bounded subagents, or native Dynamic Workflows. <strong>Not</strong> automatic fan-out for every task.</p></div>
+</div>
+<div class="diagram-shell" style="margin-top:16px"><h3>How the skill, execution, and optional Advisor relate</h3><p>Arrows show responsibilities, not automatically available capabilities.</p>
+<p class="scroll-tip">Swipe horizontally to view the full diagram →</p><div class="diagram-scroll"><svg aria-label="The skill loads the protocol and governs execution; Advisor is separate and does not replace checks" class="diagram" role="img" viewbox="0 0 1080 320">
+<defs><marker id="ar1" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="control" height="110" rx="16" width="235" x="27" y="105"></rect><text class="node-title" text-anchor="middle" x="144" y="143">/graph-task</text><text class="node-sub" text-anchor="middle" x="144" y="168">primary instructions</text><text class="node-sub" text-anchor="middle" x="144" y="189">plans and governs</text>
+<rect class="stage" height="96" rx="16" width="235" x="324" y="18"></rect><text class="node-title" text-anchor="middle" x="441" y="53">protocol.md</text><text class="node-sub" text-anchor="middle" x="441" y="78">mandatory rules</text>
+<rect class="stage" height="115" rx="16" width="235" x="324" y="166"></rect><text class="node-title" text-anchor="middle" x="441" y="202">Execution</text><text class="node-sub" text-anchor="middle" x="441" y="226">commands · subagents</text><text class="node-sub" text-anchor="middle" x="441" y="247">Dynamic Workflows</text>
+<rect class="finish" height="115" rx="16" width="195" x="635" y="166"></rect><text class="node-title" text-anchor="middle" x="733" y="202">Gates / CHECKS</text><text class="node-sub" text-anchor="middle" x="733" y="227">tests + evidence</text><text class="node-sub" text-anchor="middle" x="733" y="248">PASS / FAIL</text>
+<rect class="risk" height="96" rx="16" width="195" x="635" y="18"></rect><text class="node-title" text-anchor="middle" x="733" y="53">Advisor</text><text class="node-sub" text-anchor="middle" x="733" y="77">enabled separately</text>
+<rect fill="#f4f6f8" height="96" rx="16" stroke="#c5d0d6" stroke-width="1.5" width="178" x="882" y="18"></rect><text class="node-title" text-anchor="middle" x="971" y="53">guide.ru.html</text><text class="node-sub" text-anchor="middle" x="971" y="77">human-only</text>
+<path class="line" d="M262 135 H285 V66 H324" marker-end="url(#ar1)"></path><path class="line" d="M262 189 H291 V222 H324" marker-end="url(#ar1)"></path><path class="line" d="M559 222 H635" marker-end="url(#ar1)"></path>
+<path class="line line-dash" d="M635 77 H602 V193 H559" marker-end="url(#ar1)"></path><text class="label" text-anchor="middle" x="551" y="145">optional</text>
+<text class="node-sub" text-anchor="middle" x="971" y="136">not loaded into context</text><text class="node-sub" text-anchor="middle" x="971" y="155">during execution</text>
+</svg></div>
+<div class="legends"><span><i class="dot" style="background:#9bded4"></i>Control</span><span><i class="dot" style="background:#b7cdec"></i>Required rules / work</span><span><i class="dot" style="background:#ead09e"></i>Optional consultation</span><span><i class="dot" style="background:#c1d9c5"></i>Result verification</span></div>
+</div>
+<div class="callout"><strong>Separation of responsibilities:</strong> Advisor offers a second opinion to the executor, not an acceptance decision. Even useful advice cannot replace a test, a gate, or evidence tied to the actual saved artifact.</div>
+</section>
+<section class="section" id="execution-modes">
+<div class="section-header"><div class="eyebrow">02 / Execution options</div>
+<h2>One approved graph, two execution modes</h2>
+<p>These are not competing systems. <strong>graph.md</strong> specifies what needs to be done and how to verify it. Claude chooses how to execute the plan. With Dynamic Workflow, the same plan gains a second, executable representation in JavaScript.</p>
+</div>
+<div class="diagram-shell"><h3>From specification to execution and verified artifacts</h3>
+<p class="scroll-tip">Swipe horizontally to view the full diagram →</p><div class="diagram-scroll"><svg aria-label="One graph.md specification and two execution modes: direct Claude orchestration or Dynamic Workflow. Both produce artifacts subject to the same checks." class="diagram" role="img" viewbox="0 0 1100 360">
+<defs><marker id="ar-modes" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="control" height="83" rx="16" width="320" x="390" y="13"></rect><text class="node-title" text-anchor="middle" x="550" y="44">graph.md — specification</text><text class="node-sub" text-anchor="middle" x="550" y="68">nodes, dependencies, checks, budget</text>
+<rect class="stage" height="95" rx="16" width="412" x="62" y="155"></rect><text class="node-title" text-anchor="middle" x="268" y="190">A · Direct execution</text><text class="node-sub" text-anchor="middle" x="268" y="217">Claude selects the next node as work proceeds</text>
+<rect class="stage" height="95" rx="16" width="412" x="626" y="155"></rect><text class="node-title" text-anchor="middle" x="832" y="190">B · Dynamic Workflow (JS)</text><text class="node-sub" text-anchor="middle" x="832" y="217">Script defines order; runtime executes</text>
+<rect class="finish" height="60" rx="14" width="440" x="330" y="289"></rect><text class="node-title" text-anchor="middle" x="550" y="315">Shared gates · checks.md · evidence</text><text class="node-sub" text-anchor="middle" x="550" y="336">only verified file versions are accepted</text>
+<path class="line" d="M480 96 V123 H268 V155" marker-end="url(#ar-modes)"></path><path class="line" d="M620 96 V123 H832 V155" marker-end="url(#ar-modes)"></path>
+<path class="line" d="M268 250 V265 H495 V289" marker-end="url(#ar-modes)"></path><path class="line" d="M832 250 V265 H605 V289" marker-end="url(#ar-modes)"></path>
+</svg></div>
+</div>
+<div class="two-cols" style="margin-top:16px">
+<div class="panel"><span class="tag">MODE A</span><h3>Without Dynamic Workflow</h3><p>Claude executes nodes directly or delegates bounded research and reviews to subagents. The same <code>graph.md</code>, permission boundaries, evidence, gates, and closure artifacts still apply.</p><p>Best for small or heterogeneous graphs where a separate JavaScript orchestrator would add overhead.</p></div>
+<div class="panel"><span class="tag blue">MODE B</span><h3>With Dynamic Workflow</h3><p>Claude writes the JavaScript execution graph. <strong>The script defines dependencies and call order</strong>; the runtime executes agents and retains intermediate results. <code>graph.md</code> remains the approved specification, not a second live scheduler.</p><p>Best for many similar independent tasks when scripted orchestration reduces pressure on the main context.</p></div>
+</div>
+<div class="callout" style="margin-top:16px"><strong>Synchronization and ownership:</strong> each Workflow is bound to one revision/hash of <code>graph.md</code> and a limited node subset. Before launch, record the phase, graph hash and authorization in <code>progress.md</code>; the root agent adds the actual run ID and JS path only after control returns, if available. Gate agents verify saved outputs inside the script; one aggregator exclusively records admissions in <code>checks.md</code>. Only the root owns <code>progress.md</code>, which is not updated during an active Workflow. The root must not modify this run's files or re-execute its nodes while it runs. A changed graph requires a newly approved revision.</div><div class="callout warn" style="margin-top:14px"><strong>Mode B needs separate approval.</strong> After reviewing <code>graph.md</code>, the user explicitly approves the phase, number of agents, concurrency, write permissions and budget. Invoking <code>/graph-task</code> or a tool permission prompt is not a substitute. For long or risky tasks, use multiple smaller Workflows with verification between phases; a running script cannot request arbitrary mid-run sign-off.</div><div class="table-wrap" style="margin-top:16px"><table>
+<thead><tr><th>Concern</th><th>Owner in mode B</th><th>Rule</th></tr></thead>
+<tbody>
+<tr><td>Order and concurrency</td><td>Workflow JS script</td><td>Only approved nodes and limits; the runtime executes the script's calls.</td></tr>
+<tr><td>Artifacts and evidence</td><td>Worker agents</td><td>One writer per file; preserve version and hash.</td></tr>
+<tr><td>Verification before consumption</td><td>Gate agent + one aggregator</td><td>The aggregator alone writes checks.md in this phase; failed/missing/unverified checks block dependents.</td></tr>
+<tr><td>Progress and handoff</td><td>Root agent (between phases)</td><td>Only the root writes progress.md after regaining control; PREPARED may remain after interruption.</td></tr>
+<tr><td>Budget and stop</td><td>Controls between phases</td><td>A large-run warning is not a financial hard cap.</td></tr>
+</tbody></table></div>
+<div class="two-cols" style="margin-top:16px">
+<div class="note"><h3>Resuming the original session</h3><p>Return to the same Claude Code session (using <code>claude --resume</code> where needed) and use native Workflow relaunch. Changes to prompts, call order or failures may rerun completed agents: <strong>also recheck inputs and evaluators; verify remote state before repeating an external write</strong>.</p></div>
+<div class="note"><h3>Continuing in a new session</h3><p>Reread the normative protocol, then <code>graph.md</code>, <code>progress.md</code> and <code>checks.md</code>. Verify saved artifact hashes, invalidate stale admissions and approve a new Workflow <strong>only for remaining nodes</strong>. This is a new run, not a restoration of the old runtime.</p></div>
+</div>
+<p class="small subtle" style="margin-top:14px">Official reference: <a href="https://code.claude.com/docs/en/workflows" rel="noreferrer noopener" target="_blank">Claude Dynamic Workflows</a>. The execution mechanism does not override scope restrictions, approval rules, or verification requirements. On Pro, Dynamic Workflows must be enabled in /config.</p>
+</section>
+<section class="section" id="lifecycle"><div class="section-header"><div class="eyebrow">03 / Process</div><h2>Task lifecycle</h2><p>First define the deliverable and authorization boundaries. Parallel work begins only after any required approval and a test of the verification pipeline.</p></div>
+<div class="diagram-shell"><h3>Main path and bounded correction loop</h3>
+<p class="scroll-tip">Swipe horizontally to view the full diagram →</p><div class="diagram-scroll"><svg aria-label="Contract, graph, approval, preflight, execution, gate, integration, and report; blocking failures return to the producer up to three times" class="diagram" role="img" viewbox="0 0 1160 430">
+<defs><marker id="ar2" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="stage" height="95" rx="14" width="162" x="18" y="84"></rect><text class="node-title" text-anchor="middle" x="99" y="119">Contract</text><text class="node-sub" text-anchor="middle" x="99" y="143">done · scope</text><text class="node-sub" text-anchor="middle" x="99" y="162">budget · baseline</text>
+<rect class="stage" height="95" rx="14" width="162" x="218" y="84"></rect><text class="node-title" text-anchor="middle" x="299" y="119">Graph</text><text class="node-sub" text-anchor="middle" x="299" y="143">nodes · edges</text><text class="node-sub" text-anchor="middle" x="299" y="162">checks · review</text>
+<rect class="risk" height="95" rx="14" width="156" x="418" y="84"></rect><text class="node-title" text-anchor="middle" x="496" y="119">Approval</text><text class="node-sub" text-anchor="middle" x="496" y="143">plan, permissions</text><text class="node-sub" text-anchor="middle" x="496" y="162">before fan-out</text>
+<rect class="risk" height="95" rx="14" width="155" x="612" y="84"></rect><text class="node-title" text-anchor="middle" x="690" y="119">Preflight trial</text><text class="node-sub" text-anchor="middle" x="690" y="143">one real task</text><text class="node-sub" text-anchor="middle" x="690" y="162">+ known-invalid sample</text>
+<rect class="control" height="95" rx="14" width="155" x="802" y="84"></rect><text class="node-title" text-anchor="middle" x="880" y="119">Execution</text><text class="node-sub" text-anchor="middle" x="880" y="143">graph nodes</text><text class="node-sub" text-anchor="middle" x="880" y="162">save versions</text>
+<rect class="finish" height="95" rx="14" width="145" x="998" y="84"></rect><text class="node-title" text-anchor="middle" x="1071" y="119">Gate</text><text class="node-sub" text-anchor="middle" x="1071" y="143">verify saved output</text><text class="node-sub" text-anchor="middle" x="1071" y="162">PASS / FAIL</text>
+<path class="line" d="M180 130 H218" marker-end="url(#ar2)"></path><path class="line" d="M380 130 H418" marker-end="url(#ar2)"></path><path class="line" d="M574 130 H612" marker-end="url(#ar2)"></path><path class="line" d="M767 130 H802" marker-end="url(#ar2)"></path><path class="line" d="M957 130 H998" marker-end="url(#ar2)"></path>
+<rect class="finish" height="90" rx="14" width="335" x="805" y="280"></rect><text class="node-title" text-anchor="middle" x="972" y="316">Integration and closure</text><text class="node-sub" text-anchor="middle" x="972" y="338">full tests · checks · progress</text><text class="node-sub" text-anchor="middle" x="972" y="356">PASS / FAIL / UNRESOLVED</text>
+<path class="line" d="M1100 179 V236 H1050 V280" marker-end="url(#ar2)"></path><text class="label" x="1108" y="225">PASS</text>
+<rect class="failed" height="90" rx="14" width="295" x="410" y="280"></rect><text class="node-title" text-anchor="middle" x="558" y="315">Bounded correction</text><text class="node-sub" text-anchor="middle" x="558" y="338">blocking findings only</text><text class="node-sub" text-anchor="middle" x="558" y="357">max. 3 returns per node</text>
+<path d="M1020 179 V239 H463 V280" fill="none" marker-end="url(#ar2)" stroke="#b95f5b" stroke-width="2.6"></path><text class="label" style="fill:#b95f5b" x="768" y="230">FAIL</text>
+<path d="M652 280 V265 H880 V179" fill="none" marker-end="url(#ar2)" stroke="#b95f5b" stroke-width="2.5"></path><text class="label" style="fill:#b95f5b" x="688" y="256">fix → recheck</text>
+<text class="label" x="18" y="38">Mandatory checks before any parallel launch</text>
+<text class="node-sub" x="18" y="403">If budget, attempts, or mandatory evidence are exhausted, stop with an honest UNRESOLVED status rather than a fabricated PASS.</text>
+</svg></div>
+<div class="flow-caption">Simplified diagram: gates protect transitions between risky nodes too, not just the final artifact. The trial verifies gates needed by the current phase before fan-out; later gates are tested before their first dependent use.</div>
+</div>
+<div class="checkgrid" style="margin-top:16px">
+<div class="metric"><div class="number">8 fields</div><div class="label">Task contract: TASK, OUTPUT, CHECKS, SOURCES, SCOPE, LIMIT, BUDGET, REVIEW_POLICY</div></div>
+<div class="metric"><div class="number">Trial</div><div class="label">A real representative node exercises the phase; each new gate must reject a known-invalid sample before dependent use.</div></div>
+<div class="metric"><div class="number">≤ 3</div><div class="label">Correction returns per node, excluding initial production</div></div>
+<div class="metric"><div class="number">≤ 5</div><div class="label">Actionable findings per reviewer, per review (max.)</div></div>
+</div>
+</section>
+<section class="section" id="controls"><div class="section-header"><div class="eyebrow">04 / Guarantees</div><h2>What “verified” really means</h2><p>A model cannot accept its own work on trust. It must show exactly which saved artifact was checked, by which evaluator, and with what result.</p></div>
+<div class="two-cols">
+<div class="panel"><span class="tag blue">GATE</span><h3>Bind evidence to a specific version</h3><p>A PASS records relevant input, output, contract and evaluator versions. Changes invalidate the affected admission and dependent results until rechecked.</p></div>
+<div class="panel"><span class="tag">DETERMINISTIC FIRST</span><h3>Deterministic checks before opinions</h3><p>Sorting, comparisons, counting, and tests belong in tools and code. Use a model for ambiguous judgment and root-cause analysis, not tasks with one deterministic answer.</p></div>
+<div class="panel"><span class="tag amber">REVIEW</span><h3>Risk-proportionate review</h3><p>By default, use a producer and deterministic checks. Add independent review when the risk justifies the cost. A judge is needed for blocking disagreements, not after every pair of opinions.</p></div>
+<div class="panel"><span class="tag blue">FILE OWNERSHIP</span><h3>One owner for each state file</h3><p>During a Workflow, gate agents save separate evidence and one aggregator updates <code>checks.md</code>. Only the root updates <code>progress.md</code> between phases. See <a href="#execution-modes">section 02</a> for recovery scenarios.</p></div>
+</div>
+<div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Category</th><th>Example</th><th>Gate behavior</th></tr></thead><tbody>
+<tr><td><span class="bad">HIGH</span></td><td>Seriously incorrect output, failure in normal use, or critical security defect</td><td><span class="bad">FAIL</span> — blocks downstream consumption</td></tr>
+<tr><td><span class="warn-t">MEDIUM</span></td><td>Wrong behavior in a realistic edge case</td><td><span class="bad">FAIL</span> — requires a fix or authorized contract revision</td></tr>
+<tr><td><span class="good">LOW</span></td><td>Nonessential style, wording, or minor cosmetic effects</td><td>Report only; no automatic correction loop</td></tr>
+<tr><td>CHECKS: failed / unknown</td><td>Required test failed, was not run, or has unverified evidence</td><td>FAIL or UNRESOLVED — never PASS</td></tr>
+</tbody></table></div>
+<div class="callout warn"><strong>Never weaken valid tests to fit the result.</strong> If the contract or test harness is wrong, route the issue to its owner. Do not count it against the producer. A contract change invalidates affected downstream admissions.</div>
+</section>
+<section class="section" id="budget"><div class="section-header"><div class="eyebrow">05 / Resources</div><h2>Budget the entire execution tree, not one agent</h2><p>Measure the full cost of an accepted result: orchestrator, workers, reviewers, retries, external tools, and closure.</p></div>
+<div class="diagram-shell"><h3>What belongs in the total budget</h3>
+<p class="scroll-tip">Swipe horizontally to view the full diagram →</p><div class="diagram-scroll"><svg aria-label="Budget includes root, workers, reviewers, retries, tools, and closure reserve" class="diagram" role="img" viewbox="0 0 1100 230">
+<rect fill="#f4f7f9" height="63" rx="12" stroke="#d9e0e6" width="1064" x="18" y="34"></rect>
+<rect fill="#306b9a" height="63" rx="12" width="198" x="18" y="34"></rect><rect fill="#358f89" height="63" width="320" x="216" y="34"></rect><rect fill="#bd9658" height="63" width="160" x="536" y="34"></rect><rect fill="#bd7673" height="63" width="124" x="696" y="34"></rect><rect fill="#7590a5" height="63" width="114" x="820" y="34"></rect><rect fill="#e3ece6" height="63" rx="12" width="148" x="934" y="34"></rect>
+<text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="117" y="71">Root</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="376" y="71">Workers</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="616" y="71">Review</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="758" y="71">Retries</text><text fill="white" font-size="15" font-weight="750" text-anchor="middle" x="877" y="71">Tools</text><text fill="#265744" font-size="16" font-weight="800" text-anchor="middle" x="1008" y="71">Reserve</text>
+<text class="node-sub" x="25" y="125">Segments are illustrative accounting categories, not recommended percentages.</text>
+<rect class="finish" height="57" rx="10" width="330" x="18" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="183" y="181">Measured</text><rect class="risk" height="57" rx="10" width="330" x="387" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="552" y="181">Estimated</text><rect class="failed" height="57" rx="10" width="326" x="756" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="919" y="181">Unknown</text>
+</svg></div>
+</div>
+<div class="callout danger"><strong>A prompt cannot enforce a hard spending stop.</strong> A hard budget needs a real counter and external stop mechanism. Without them, the limit is only guidance and an estimate. Do not convert API dollar costs into subscription percentages without a directly observed allowance counter.</div>
+</section>
+<section class="section" id="start"><div class="section-header"><div class="eyebrow">06 / Setup</div><h2>Using the skill in one project</h2><p>Unpack into the project root. The package does not change user-level instructions, global settings, or files in other projects.</p></div>
+<div class="steps">
+<div class="step"><h3>Extract into the target project root</h3><p>The paths should look like this: <code>.claude/skills/graph-task/SKILL.md</code>, <code>.claude/skills/graph-task/references/protocol.md</code> and <code>.claude/skills/graph-task/docs/guide.ru.html</code>. Do not nest <code>.claude</code> inside another <code>.claude</code>. The English edition is available alongside the Russian edition at <code>.claude/skills/graph-task/docs/guide.en.html</code>.</p></div>
+<div class="step"><h3>Open Claude Code from this project</h3><p>Invoking <code>/graph-task</code> loads the skill. The agent does not invoke it on its own because the setting <code>disable-model-invocation: true</code>.</p></div>
+<div class="step"><h3>Describe the task, acceptance criteria, and scope</h3><p>If budgets or limits are missing, the agent must not invent authorization. It reuses existing permissions and asks only about gaps that materially affect safe execution.</p></div>
+<div class="step"><h3>Review the graph and approve execution first</h3><p>The plan is saved to <code>.agent-runs/&lt;task-id&gt;/graph.md</code>. For mode B, separately approve its phase, agent cap, concurrency and budget <strong>after reviewing the graph</strong>. Then run the trial before any fan-out, execute nodes, apply gates and report results.</p></div>
+</div>
+<div class="code">/graph-task Fix the regression in the authentication module.
+OUTPUT: corrected code in this project.
+CHECKS: authentication tests pass; no session regressions.
+SOURCES: existing repository code, tests, and logs.
+SCOPE: auth module and its tests only.
+LIMIT: up to 2 hours or 12 nodes.
+BUDGET: use available counters; do not claim a hard cap without a watchdog.
+REVIEW_POLICY: independent review for security-sensitive changes.
+Propose mode A/B, write the graph and request approval.
+If B, separately ask permission for its phase, agent count, and concurrency.</div>
+<div class="diagram-shell" style="margin-top:15px"><h3>Where each task run stores its artifacts</h3>
+<div class="install-tree" style="max-width:610px">.agent-runs/
+└── auth-regression-001/
+    ├── graph.md          ← nodes, edges, criteria
+    ├── checks.md         ← passing/failing gates
+    ├── progress.md       ← checkpoints and next steps
+    └── evidence/         ← evidence artifacts and index</div>
+<p class="small subtle" style="margin-top:13px">The run ID is illustrative. The exact evidence/index layout depends on the task. A separate folder prevents one run from overwriting another run’s reports. For mode B, only the root records actual run IDs and JS paths in progress.md after regaining control; unavailable details remain unknown/pending.</p>
+</div>
+<div class="two-cols" style="margin-top:16px"><div class="note"><h3>When to use it</h3><p>Cross-module refactors, data migrations, risky integrations, broad-source research, and long tasks that may span multiple sessions.</p></div><div class="note"><h3>When not to use it</h3><p>One-off answers, a trivial edit, or a single-file inspection. Plain Claude Code with tests is often enough. Even when the skill is invoked, a one-node graph without additional agents is valid.</p></div></div>
+</section>
+<section class="section" id="advisor"><div class="section-header"><div class="eyebrow">07 / Optional capability</div><h2>Configure Advisor separately</h2><p>This archive does not install Advisor. It may help with architectural uncertainty, but it should not silently multiply the cost of parallel work.</p></div>
+<div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Recommendation</th><th>Reason</th></tr></thead><tbody>
+<tr><td>Routine implementation</td><td>No Advisor</td><td>Avoid extra context reads; tests suffice</td></tr>
+<tr><td>Difficult architectural decision</td><td>Advisor for the decision stage</td><td>Second opinion before a high-stakes choice</td></tr>
+<tr><td>Two repeated failures with unclear cause</td><td>Advisor if the model pairing is supported</td><td>Challenge the causal hypothesis instead of retrying blindly</td></tr>
+<tr><td>Large parallel fan-out</td><td>Do not enable Advisor across the entire run without checking inheritance</td><td>Do not assume an undocumented per-worker Advisor disablement</td></tr>
+<tr><td>Final code acceptance</td><td>Tests/gates + risk-based review</td><td>Advisor opinions are not correctness evidence</td></tr>
+</tbody></table></div>
+<p style="margin-top:18px">For a one-session experiment, use the CLI flag, <em>if</em> the selected model pair and provider support Advisor:</p>
+<div class="code">cd /path/to/project
+claude --model sonnet --advisor opus</div>
+<p>Or enable it inside Claude Code with <code>/advisor opus</code>, but be aware that this choice is usually persisted to user settings and may affect other projects. The <code>--advisor</code> flag applies only to this session. The skill works just as well <strong>without Advisor</strong>.</p>
+<div class="callout warn"><strong>Verify availability:</strong> Advisor is an experimental feature subject to provider and model-pair restrictions. Supported models, versions, plans, and behavior may change. Consult <a href="https://code.claude.com/docs/en/advisor" rel="noreferrer" target="_blank">the official Advisor documentation</a>.</div>
+</section>
+<section class="section"><div class="section-header"><div class="eyebrow">08 / FAQ</div><h2>Short answers</h2></div>
+<details><summary>Must the agent read this HTML on every run?</summary><p>No. It must read the normative <code>references/protocol.md</code>, while this visual guide is for people only. The <code>SKILL.md</code> states this boundary explicitly.</p></details>
+<details><summary>Does a project-local skill need a global CLAUDE.md?</summary><p>No. The skill lives in <code>project/.claude/skills/graph-task/</code>. It must not change global files. Existing project instructions are preserved; <code>AGENTS.md</code> may be updated only with authorization.</p></details>
+<details><summary>Will Claude automatically create many subagents?</summary><p>No. A small task may use one node and direct tools. Native Dynamic Workflow is useful only when complexity or parallelism justifies a separate orchestration script.</p></details>
+<details><summary>Can a prompt guarantee a spending cap?</summary><p>No. You need a real counter or watchdog that can stop new spending. Without that, the estimate must not be described as a hard limit.</p></details>
+<details><summary>Which files matter when starting a new session?</summary><p>See <a href="#execution-modes">section 02 — Execution modes</a>: read the normative protocol, then verify the intended run’s <code>graph.md</code>, <code>progress.md</code>, <code>checks.md</code> and accepted artifact hashes before resuming the remaining nodes.</p></details>
+</section>
+</main>
+<footer class="footer"><div class="wrap"><p style="margin:0 0 9px">Project: <a href="https://github.com/falkolab/agent-graph-task" rel="noreferrer" target="_blank">GitHub repository</a> · <a href="https://github.com/falkolab/agent-graph-task/blob/main/README.md" rel="noreferrer" target="_blank">README</a></p><strong>Graph Task / human documentation</strong><p style="margin:8px 0">This is an explanatory guide, not the agent’s normative protocol. Working rules are in <code>SKILL.md</code> and <code>references/protocol.md</code>.</p><p style="margin:0">Claude Code documentation: <a href="https://code.claude.com/docs/en/skills" rel="noreferrer" target="_blank">Skills</a> · <a href="https://code.claude.com/docs/en/workflows" rel="noreferrer noopener" target="_blank">Dynamic Workflows</a> · <a href="https://code.claude.com/docs/en/advisor" rel="noreferrer" target="_blank">Advisor</a></p></div></footer>
+</body>
+</html>
