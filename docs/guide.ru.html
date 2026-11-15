@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Graph Task — руководство по использованию / Claude Code</title>
+<meta content="Визуальное руководство: проектный граф, два режима исполнения, gates, handoff между сессиями и независимый Advisor." name="description"/>
+<style>
+:root{color-scheme:light;--bg:#f6f7f9;--paper:#fff;--ink:#18202b;--muted:#566371;--line:#dce2e8;--teal:#007e78;--teal-soft:#e0f4f1;--blue:#3169bc;--blue-soft:#edf3fe;--amber:#b46107;--amber-soft:#fff3de;--red:#b64241;--red-soft:#fcecea;--radius:17px;--shadow:0 12px 35px rgba(25,43,65,.045)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.63 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"Helvetica Neue",Arial,sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(2.1rem,4.5vw,3.75rem);line-height:1.09;letter-spacing:-.045em;margin:16px 0 20px;max-width:850px}h2{font-size:clamp(1.55rem,2.75vw,2.05rem);line-height:1.25;letter-spacing:-.025em}h3{font-size:1.13rem;line-height:1.35}p{margin-bottom:14px}.subtle{color:var(--muted)}.small{font-size:.88rem}.eyebrow{font-size:.79rem;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:var(--teal)}.wrap{max-width:1200px;margin:auto;padding:0 28px}.site-head{background:linear-gradient(128deg,#112433 0%,#142c3d 46%,#0e4443 100%);color:#fff;padding-bottom:74px}.nav{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px 0}.brand{font-size:1rem;font-weight:850;letter-spacing:-.025em;display:flex;align-items:center;gap:10px}.mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#88e6d5;color:#143936;font-size:20px}.nav-links{display:flex;flex-wrap:wrap;gap:20px}.nav-links a{color:#d8e7eb;font-size:.85rem}.hero{padding:55px 0 0}.hero .eyebrow{color:#96e5d7}.hero p{color:#d3e3e8;max-width:740px;font-size:1.11rem;line-height:1.62}.hero-actions{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.pill{display:inline-block;border:1px solid rgba(206,244,236,.35);background:rgba(255,255,255,.075);border-radius:999px;padding:7px 13px;font-size:.85rem;color:#e0f3ef}.hero-cta{color:#0a3536;background:#b8f4e4;font-weight:750;border-radius:10px;padding:11px 15px}.hero-cta:hover{text-decoration:none;background:white}.main{margin-top:-29px;padding-bottom:90px}.lead-box,.panel,.figure,.callout,.table-wrap,.steps,.note{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow)}.lead-box{padding:29px;display:grid;grid-template-columns:1.35fr .9fr;gap:32px}.lead-box .big{font-size:1.25rem;font-weight:760;line-height:1.42;letter-spacing:-.01em}.lead-box p:last-child{margin-bottom:0}.install-tree{font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:#c5eeea;background:#102b38;border-radius:12px;padding:17px;white-space:pre-wrap;overflow-wrap:anywhere}.section{margin-top:64px;scroll-margin-top:26px}.section-header{margin-bottom:21px}.section-header p{max-width:820px;color:var(--muted)}.three-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.two-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.panel{padding:22px}.panel h3{margin:9px 0 8px}.panel p:last-child{margin-bottom:0}.kicker{color:var(--teal);font-size:.78rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.tag{display:inline-flex;align-items:center;gap:6px;background:var(--teal-soft);color:#076c61;padding:4px 9px;border-radius:7px;font-size:.76rem;font-weight:720}.tag.blue{background:var(--blue-soft);color:#235ca9}.tag.amber{background:var(--amber-soft);color:#8c5100}.tag.gray{background:#eef0f3;color:#54606c}.diagram-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px 16px;box-shadow:var(--shadow)}.diagram-shell h3{margin:0 0 6px}.diagram-shell p{margin:0 0 12px;color:var(--muted);font-size:.89rem}.diagram-scroll{overflow-x:auto;padding:6px 0 2px}svg.diagram{width:100%;height:auto;min-width:760px;display:block}svg text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}svg .node-title{font-size:18px;font-weight:800;fill:#172c39}svg .node-sub{font-size:13px;fill:#506273}svg .line{stroke:#8296a8;stroke-width:2.4;fill:none}svg .line-dash{stroke-dasharray:6 6}svg .label{font-size:13px;font-weight:800;fill:#536779}svg .control{fill:#e6f5f2;stroke:#46ab9c;stroke-width:1.5}svg .stage{fill:#eef4fd;stroke:#9cbbe7;stroke-width:1.5}svg .risk{fill:#fff2dd;stroke:#d9a95e;stroke-width:1.5}svg .finish{fill:#e9f4ed;stroke:#78b38d;stroke-width:1.5}svg .failed{fill:#fff1f0;stroke:#d88482;stroke-width:1.5}.legends{display:flex;gap:17px;flex-wrap:wrap;margin-top:6px;color:var(--muted);font-size:.82rem}.dot{display:inline-block;border-radius:3px;width:11px;height:11px;margin-right:6px;vertical-align:-1px}.divider{border:0;border-top:1px solid var(--line);margin:24px 0}.checkgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{padding:17px;background:#f7fafb;border:1px solid var(--line);border-radius:12px}.metric .number{font-size:1.55rem;font-weight:850;letter-spacing:-.04em;line-height:1.25;color:#163d43}.metric .label{font-size:.82rem;color:var(--muted);margin-top:5px}.callout{padding:18px 21px;margin-top:18px;border-left:4px solid var(--teal)}.callout.warn{border-left-color:var(--amber);background:#fffdfa}.callout.danger{border-left-color:var(--red);background:#fffcfc}.callout p:last-child{margin-bottom:0}.table-wrap{overflow-x:auto}.table-wrap table{width:100%;min-width:600px;border-collapse:collapse;text-align:left;font-size:.92rem}.table-wrap th{background:#f2f6f8;color:#334b5c;font-weight:800}.table-wrap th,.table-wrap td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}.table-wrap tr:last-child td{border-bottom:none}.table-wrap td:first-child{font-weight:750}.good{color:#157b64;font-weight:780}.bad{color:#b13b3b;font-weight:780}.warn-t{color:#a16200;font-weight:780}.steps{counter-reset:step;padding:10px 25px}.step{position:relative;padding:16px 8px 16px 45px;border-bottom:1px solid var(--line)}.step:last-child{border:0}.step:before{counter-increment:step;content:counter(step);position:absolute;left:1px;top:17px;width:28px;height:28px;display:grid;place-items:center;color:#fff;background:var(--teal);border-radius:9px;font-weight:750;font-size:.8rem}.step h3{margin:0 0 7px}.step p{margin-bottom:0}.code{background:#0e2230;color:#daf0ef;border-radius:12px;padding:18px 20px;font:13.5px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0}.code b{color:#7ce0cb}.note{padding:17px 20px;background:#f8fcfd}.note h3{margin:0 0 6px}.note p:last-child{margin:0}.file-strip{display:flex;flex-wrap:wrap;gap:9px}.file-chip{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:white;font:12px ui-monospace,SFMono-Regular,Consolas,monospace}.timeline{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:13px 0}.timeline span{background:var(--blue-soft);color:#285a96;border:1px solid #b6d0ee;border-radius:8px;padding:6px 10px;font-size:.84rem;font-weight:750}.timeline i{color:#8da0ac;font-style:normal}.breakout{background:#e8f5f1;border:1px solid #b9ddd4;border-radius:var(--radius);padding:25px}.breakout h2{margin-bottom:12px}.footer{background:#152837;color:#baccd4;padding:32px 0;font-size:.85rem}.footer a{color:#b2e8df}.footer strong{color:#fff}details{border:1px solid var(--line);border-radius:11px;background:white;padding:13px 18px;margin-bottom:10px}summary{cursor:pointer;font-weight:750}details p{margin-top:10px;color:var(--muted)}.cols-desc{display:grid;grid-template-columns:1fr 1fr;gap:20px}.thin{font-weight:500;color:var(--muted)}.flow-caption{font-size:.82rem;color:var(--muted);text-align:center;margin-top:14px}.print-only{display:none}
+@media(max-width:870px){.lead-box{grid-template-columns:1fr}.three-cols{grid-template-columns:1fr}.checkgrid{grid-template-columns:repeat(2,1fr)}.cols-desc{grid-template-columns:1fr}.nav-links{gap:10px}.site-head{padding-bottom:60px}.hero{padding-top:29px}}
+@media(max-width:650px){.wrap{padding:0 17px}.nav{align-items:flex-start;flex-direction:column}.nav-links{gap:14px}.two-cols{grid-template-columns:1fr}.section{margin-top:47px}.lead-box{padding:20px}.panel,.diagram-shell{padding:18px}.hero p{font-size:1rem}.checkgrid{grid-template-columns:repeat(2,1fr)}.metric{padding:12px}}
+@media print{body{background:#fff;font-size:12px}h1{font-size:30px}h2{font-size:23px}.site-head{background:#fff;color:var(--ink);padding:0}.site-head .wrap{border-bottom:2px solid #334}.hero{padding:12px 0}.hero p{color:var(--muted)}.hero .eyebrow{color:var(--teal)}.nav-links,.hero-actions{display:none}.main{margin:0}.section{margin-top:26px;break-inside:avoid}.panel,.lead-box,.table-wrap,.diagram-shell{box-shadow:none}.diagram-scroll{overflow:visible}svg.diagram{min-width:0}.footer{background:white;color:var(--ink)}.callout,.panel{break-inside:avoid}}
+
+.scroll-tip{display:none;font-size:.83rem;color:var(--muted);margin:0 0 8px}
+@media(max-width:720px){.diagram-scroll svg.diagram{min-width:1000px}.scroll-tip{display:block}}
+</style>
+</head>
+<body>
+<header class="site-head">
+<div class="wrap">
+<div class="nav"><div class="brand"><span class="mark">◇</span> GRAPH TASK <span style="font-size:.73rem;font-weight:500;color:#a3bcc3">/ Claude Code</span></div>
+<nav aria-label="Содержание" class="nav-links"><a href="#architecture">Архитектура</a><a href="#execution-modes">Два режима</a><a href="#lifecycle">Процесс</a><a href="#controls">Контроль</a><a href="#budget">Ресурсы</a><a href="#start">Запуск</a><a href="#advisor">Advisor</a><a href="guide.en.html" style="border:1px solid rgba(206,244,236,.45);padding:2px 9px;border-radius:7px" title="English edition">EN</a></nav>
+</div>
+<div class="hero"><div class="eyebrow">Проектный Skill · Практическое руководство</div>
+<h1>Сложная задача — управляемый граф, а не бесконечный чат.</h1>
+<p>Наглядная карта того, как <strong>/graph-task</strong> планирует работу, распределяет её по ограниченным узлам, принимает результаты только на доказательствах и сохраняет возможность продолжить задачу из другой сессии.</p>
+<div class="hero-actions"><a class="hero-cta" href="#start">Как запустить →</a><span class="pill">Локально, в одном проекте</span><span class="pill">Advisor отдельно</span><span class="pill">Без обязательных субагентов</span></div>
+</div>
+</div>
+</header>
+<main class="wrap main">
+<div class="lead-box">
+<div><div class="eyebrow">Самое важное</div><p class="big">Для агента обязательны только <strong>два файла инструкций</strong>. Руководства на русском и английском предназначены для человека.</p>
+<p>Агент читает <strong>SKILL.md</strong> и <strong>references/protocol.md</strong>. <strong>Ему не нужно открывать руководство</strong> для выполнения задачи, поэтому документация не создаёт дополнительной нагрузки на контекст. HTML не изменяет поведение Skill.</p>
+<div class="file-strip"><span class="file-chip">⚙ SKILL.md <span class="good">исполнение</span></span><span class="file-chip">⚙ protocol.md <span class="good">правила</span></span><span class="file-chip">◉ HTML guides <span class="thin">для человека</span></span></div>
+</div>
+<div class="install-tree">graph-task/
+├── SKILL.md
+├── references/protocol.md
+└── docs/
+    ├── guide.ru.html    (RU)
+    └── guide.en.html    (EN)
+
+агент: SKILL.md + protocol.md
+человек: guide.ru.html / guide.en.html</div>
+</div>
+<section class="section" id="architecture">
+<div class="section-header"><div class="eyebrow">01 / Архитектура</div><h2>Кто за что отвечает</h2><p>Skill задаёт порядок работы. Протокол определяет неизменяемые критерии качества. Механизм исполнения подбирается под задачу. Советник не является частью Skill.</p></div>
+<div class="three-cols">
+<div class="panel"><span class="tag">ИНСТРУКЦИЯ</span><h3>Skill /graph-task</h3><p>Принимает задачу, связывает контракт, инициирует граф и соблюдает этапы проверки. Загружается <strong>только при ручном вызове</strong>.</p></div>
+<div class="panel"><span class="tag blue">ПОЛИТИКА</span><h3>protocol.md</h3><p>Детальные правила: baseline, права, версии артефактов, проверки, ревью, лимиты, расходы, остановка и восстановление.</p></div>
+<div class="panel"><span class="tag amber">МЕХАНИЗМ</span><h3>Инструменты / Workflow</h3><p>Прямые команды, одиночные субагенты или нативные Dynamic Workflows. <strong>Не</strong> автоматическое распараллеливание любой задачи.</p></div>
+</div>
+<div class="diagram-shell" style="margin-top:16px"><h3>Как связаны инструкция, исполнение и необязательный Advisor</h3><p>Стрелки показывают обязанности, а не прямой доступ к новым возможностям.</p>
+<p class="scroll-tip">Диаграмму можно прокручивать горизонтально →</p><div class="diagram-scroll"><svg aria-label="Skill загружает протокол и управляет исполнением; Advisor расположен отдельно и не заменяет проверки" class="diagram" role="img" viewbox="0 0 1080 320">
+<defs><marker id="ar1" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="control" height="110" rx="16" width="235" x="27" y="105"></rect><text class="node-title" text-anchor="middle" x="144" y="143">/graph-task</text><text class="node-sub" text-anchor="middle" x="144" y="168">основная инструкция</text><text class="node-sub" text-anchor="middle" x="144" y="189">планирует и контролирует</text>
+<rect class="stage" height="96" rx="16" width="235" x="324" y="18"></rect><text class="node-title" text-anchor="middle" x="441" y="53">protocol.md</text><text class="node-sub" text-anchor="middle" x="441" y="78">нормативные проверки</text>
+<rect class="stage" height="115" rx="16" width="235" x="324" y="166"></rect><text class="node-title" text-anchor="middle" x="441" y="202">Исполнение</text><text class="node-sub" text-anchor="middle" x="441" y="226">команды · subagents</text><text class="node-sub" text-anchor="middle" x="441" y="247">Dynamic Workflows</text>
+<rect class="finish" height="115" rx="16" width="195" x="635" y="166"></rect><text class="node-title" text-anchor="middle" x="733" y="202">Gates / CHECKS</text><text class="node-sub" text-anchor="middle" x="733" y="227">тест + доказательства</text><text class="node-sub" text-anchor="middle" x="733" y="248">PASS / FAIL</text>
+<rect class="risk" height="96" rx="16" width="195" x="635" y="18"></rect><text class="node-title" text-anchor="middle" x="733" y="53">Advisor</text><text class="node-sub" text-anchor="middle" x="733" y="77">отдельно включён</text>
+<rect fill="#f4f6f8" height="96" rx="16" stroke="#c5d0d6" stroke-width="1.5" width="178" x="882" y="18"></rect><text class="node-title" text-anchor="middle" x="971" y="53">guide.ru.html</text><text class="node-sub" text-anchor="middle" x="971" y="77">только для человека</text>
+<path class="line" d="M262 135 H285 V66 H324" marker-end="url(#ar1)"></path><path class="line" d="M262 189 H291 V222 H324" marker-end="url(#ar1)"></path><path class="line" d="M559 222 H635" marker-end="url(#ar1)"></path>
+<path class="line line-dash" d="M635 77 H602 V193 H559" marker-end="url(#ar1)"></path><text class="label" text-anchor="middle" x="551" y="145">опционально</text>
+<text class="node-sub" text-anchor="middle" x="971" y="136">не входит в контекст</text><text class="node-sub" text-anchor="middle" x="971" y="155">при исполнении</text>
+</svg></div>
+<div class="legends"><span><i class="dot" style="background:#9bded4"></i>Управление</span><span><i class="dot" style="background:#b7cdec"></i>Обязательные правила/работа</span><span><i class="dot" style="background:#ead09e"></i>Необязательная консультация</span><span><i class="dot" style="background:#c1d9c5"></i>Проверка результата</span></div>
+</div>
+<div class="callout"><strong>Разделение полномочий:</strong> совет Advisor — это мнение для исполнителя, а не акт приёмки. Даже полезная консультация не может заменить тест, gate и доказательство, привязанное к реально сохранённому файлу.</div>
+</section>
+<section class="section" id="execution-modes">
+<div class="section-header"><div class="eyebrow">02 / Два способа исполнения</div>
+<h2>Один согласованный граф — два возможных исполнительных режима</h2>
+<p>Это не две конкурирующие системы. <strong>graph.md</strong> описывает, что должно быть сделано и как проверяется результат. Claude выбирает, как исполнять этот план. При использовании Dynamic Workflow возникает второе, исполняемое представление графа — JavaScript.</p>
+</div>
+<div class="diagram-shell"><h3>От спецификации к исполнению и проверенным артефактам</h3>
+<p class="scroll-tip">Диаграмму можно прокручивать горизонтально →</p><div class="diagram-scroll"><svg aria-label="Одна спецификация graph.md и два варианта исполнения: прямое управление Claude либо Dynamic Workflow. Оба производят артефакты, которые проходят одни и те же проверки." class="diagram" role="img" viewbox="0 0 1100 360">
+<defs><marker id="ar-modes" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="control" height="83" rx="16" width="320" x="390" y="13"></rect><text class="node-title" text-anchor="middle" x="550" y="44">graph.md — спецификация</text><text class="node-sub" text-anchor="middle" x="550" y="68">узлы, зависимости, проверки, бюджет</text>
+<rect class="stage" height="95" rx="16" width="412" x="62" y="155"></rect><text class="node-title" text-anchor="middle" x="268" y="190">A · Прямое исполнение</text><text class="node-sub" text-anchor="middle" x="268" y="217">Claude выбирает следующий узел по ходу работы</text>
+<rect class="stage" height="95" rx="16" width="412" x="626" y="155"></rect><text class="node-title" text-anchor="middle" x="832" y="190">B · Dynamic Workflow (JS)</text><text class="node-sub" text-anchor="middle" x="832" y="217">JS задаёт порядок; runtime запускает</text>
+<rect class="finish" height="60" rx="14" width="440" x="330" y="289"></rect><text class="node-title" text-anchor="middle" x="550" y="315">Единые gates · checks.md · evidence</text><text class="node-sub" text-anchor="middle" x="550" y="336">принимаются только проверенные версии файлов</text>
+<path class="line" d="M480 96 V123 H268 V155" marker-end="url(#ar-modes)"></path><path class="line" d="M620 96 V123 H832 V155" marker-end="url(#ar-modes)"></path>
+<path class="line" d="M268 250 V265 H495 V289" marker-end="url(#ar-modes)"></path><path class="line" d="M832 250 V265 H605 V289" marker-end="url(#ar-modes)"></path>
+</svg></div>
+</div>
+<div class="two-cols" style="margin-top:16px">
+<div class="panel"><span class="tag">РЕЖИМ A</span><h3>Без Dynamic Workflow</h3><p>Claude выполняет узлы напрямую и при необходимости делегирует ограниченные исследования и проверки субагентам. Тот же <code>graph.md</code>, те же ограничения прав, доказательства, gates и документы завершения.</p><p>Лучше для небольшого либо неоднородного графа, где отдельный JavaScript-оркестратор не окупится.</p></div>
+<div class="panel"><span class="tag blue">РЕЖИМ B</span><h3>С Dynamic Workflow</h3><p>Claude формирует JavaScript-граф, <strong>сам скрипт задаёт зависимости и порядок вызовов</strong>, а runtime запускает агентов и хранит промежуточные результаты. <code>graph.md</code> остаётся утверждённой спецификацией, а не вторым диспетчером активных узлов.</p><p>Лучше для множества похожих, независимых задач, когда оркестрация скриптом снижает нагрузку на контекст.</p></div>
+</div>
+<div class="callout" style="margin-top:16px"><strong>Синхронизация и ответственность:</strong> каждый Workflow привязан к конкретной ревизии/хешу <code>graph.md</code> и ограниченному набору узлов. До запуска в <code>progress.md</code> фиксируются фаза, хеш графа и разрешения; корневой агент дописывает фактические ID запуска и путь к JS только после возврата управления, если они доступны. Внутри скрипта отдельные проверяющие агенты выполняют gates, затем единственный агрегатор фиксирует допуски в <code>checks.md</code>. <code>progress.md</code> принадлежит только корню, но не обновляется во время активного Workflow. Пока запуск активен, корень не меняет файлы этой фазы и не запускает те же узлы повторно. При изменении графа нужна новая согласованная ревизия.</div><div class="callout warn" style="margin-top:14px"><strong>Режим B требует отдельного согласия.</strong> После просмотра <code>graph.md</code> пользователь отдельно подтверждает фазу, число агентов, параллелизм, права записи и бюджет. Вызов <code>/graph-task</code> и обычное окно разрешения инструмента не заменяют этого решения. Для больших или рискованных задач безопаснее несколько небольших Workflow с проверками между фазами; внутри одного Workflow нельзя запросить произвольное согласование пользователя.</div><div class="table-wrap" style="margin-top:16px"><table>
+<thead><tr><th>Что</th><th>Кто отвечает в режиме B</th><th>Правило</th></tr></thead>
+<tbody>
+<tr><td>Порядок и параллелизм</td><td>JS-скрипт Workflow</td><td>Ровно согласованные узлы и ограничения; runtime исполняет вызовы скрипта.</td></tr>
+<tr><td>Файлы и доказательства</td><td>Агенты-исполнители</td><td>Один писатель на файл, версии и хеши.</td></tr>
+<tr><td>Проверка перед потреблением</td><td>Агент gate + одиночный агрегатор</td><td>Агрегатор единолично пишет checks.md в этой фазе; failed/missing/unverified блокируют следующий узел.</td></tr>
+<tr><td>Ход выполнения и handoff</td><td>Корневой агент (между фазами)</td><td>Только корень пишет progress.md после возврата управления; при прерывании возможен статус PREPARED.</td></tr>
+<tr><td>Расход и остановка</td><td>Контроль на границах фаз</td><td>Предупреждение о размере Workflow не является жёстким денежным лимитом.</td></tr>
+</tbody></table></div>
+<div class="two-cols" style="margin-top:16px">
+<div class="note"><h3>Возобновление исходной сессии</h3><p>Сначала вернитесь в ту же сессию Claude Code (при необходимости <code>claude --resume</code>) и используйте штатное возобновление Workflow. При изменении промпта, порядка вызовов или после ошибок даже завершённые агенты могут запуститься снова: <strong>после повторного запуска сверяйте также входы и проверки; внешнюю запись не повторяйте, пока не подтверждён её результат</strong>.</p></div>
+<div class="note"><h3>Продолжение в новой сессии</h3><p>Прочитайте нормативный протокол, затем <code>graph.md</code>, <code>progress.md</code> и <code>checks.md</code>. Сверьте хеши допущенных артефактов, отзовите устаревшие допуски и согласуйте запуск <strong>только оставшихся узлов</strong>. Это новый Workflow, а не восстановление его прежнего runtime.</p></div>
+</div>
+<p class="small subtle" style="margin-top:14px">Официальный справочник: <a href="https://code.claude.com/docs/en/workflows" rel="noreferrer noopener" target="_blank">Claude Dynamic Workflows</a>. Способ исполнения не отменяет пользовательские ограничения, план согласования или требования к проверке. На тарифе Pro Dynamic Workflows включаются через /config.</p>
+</section>
+<section class="section" id="lifecycle"><div class="section-header"><div class="eyebrow">03 / Процесс</div><h2>Жизненный цикл задачи</h2><p>Сначала определяем результат и границы полномочий. Параллельная работа начинается только после нужного согласования и испытания проверяющего конвейера.</p></div>
+<div class="diagram-shell"><h3>Основной путь и ограниченная петля исправлений</h3>
+<p class="scroll-tip">Диаграмму можно прокручивать горизонтально →</p><div class="diagram-scroll"><svg aria-label="Контракт, граф, согласование, preflight, исполнение, gate, интеграция и отчёт; ошибки возвращаются исполнителю максимум три раза" class="diagram" role="img" viewbox="0 0 1160 430">
+<defs><marker id="ar2" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0 0 L10 5 L0 10 z" fill="#8296a8"></path></marker></defs>
+<rect class="stage" height="95" rx="14" width="162" x="18" y="84"></rect><text class="node-title" text-anchor="middle" x="99" y="119">Контракт</text><text class="node-sub" text-anchor="middle" x="99" y="143">done · scope</text><text class="node-sub" text-anchor="middle" x="99" y="162">budget · baseline</text>
+<rect class="stage" height="95" rx="14" width="162" x="218" y="84"></rect><text class="node-title" text-anchor="middle" x="299" y="119">Граф</text><text class="node-sub" text-anchor="middle" x="299" y="143">узлы · рёбра</text><text class="node-sub" text-anchor="middle" x="299" y="162">checks · review</text>
+<rect class="risk" height="95" rx="14" width="156" x="418" y="84"></rect><text class="node-title" text-anchor="middle" x="496" y="119">Согласование</text><text class="node-sub" text-anchor="middle" x="496" y="143">план, разрешения</text><text class="node-sub" text-anchor="middle" x="496" y="162">перед fan-out</text>
+<rect class="risk" height="95" rx="14" width="155" x="612" y="84"></rect><text class="node-title" text-anchor="middle" x="690" y="119">Пробный прогон</text><text class="node-sub" text-anchor="middle" x="690" y="143">1 настоящая задача</text><text class="node-sub" text-anchor="middle" x="690" y="162">+ проверка на ошибке</text>
+<rect class="control" height="95" rx="14" width="155" x="802" y="84"></rect><text class="node-title" text-anchor="middle" x="880" y="119">Исполнение</text><text class="node-sub" text-anchor="middle" x="880" y="143">узлы графа</text><text class="node-sub" text-anchor="middle" x="880" y="162">сохранить версии</text>
+<rect class="finish" height="95" rx="14" width="145" x="998" y="84"></rect><text class="node-title" text-anchor="middle" x="1071" y="119">Gate</text><text class="node-sub" text-anchor="middle" x="1071" y="143">проверить факт</text><text class="node-sub" text-anchor="middle" x="1071" y="162">PASS / FAIL</text>
+<path class="line" d="M180 130 H218" marker-end="url(#ar2)"></path><path class="line" d="M380 130 H418" marker-end="url(#ar2)"></path><path class="line" d="M574 130 H612" marker-end="url(#ar2)"></path><path class="line" d="M767 130 H802" marker-end="url(#ar2)"></path><path class="line" d="M957 130 H998" marker-end="url(#ar2)"></path>
+<rect class="finish" height="90" rx="14" width="335" x="805" y="280"></rect><text class="node-title" text-anchor="middle" x="972" y="316">Интеграция и закрытие</text><text class="node-sub" text-anchor="middle" x="972" y="338">полные тесты · checks · progress</text><text class="node-sub" text-anchor="middle" x="972" y="356">PASS / FAIL / UNRESOLVED</text>
+<path class="line" d="M1100 179 V236 H1050 V280" marker-end="url(#ar2)"></path><text class="label" x="1108" y="225">PASS</text>
+<rect class="failed" height="90" rx="14" width="295" x="410" y="280"></rect><text class="node-title" text-anchor="middle" x="558" y="315">Ограниченное исправление</text><text class="node-sub" text-anchor="middle" x="558" y="338">только блокирующие находки</text><text class="node-sub" text-anchor="middle" x="558" y="357">макс. 3 возврата / узел</text>
+<path d="M1020 179 V239 H463 V280" fill="none" marker-end="url(#ar2)" stroke="#b95f5b" stroke-width="2.6"></path><text class="label" style="fill:#b95f5b" x="768" y="230">FAIL</text>
+<path d="M652 280 V265 H880 V179" fill="none" marker-end="url(#ar2)" stroke="#b95f5b" stroke-width="2.5"></path><text class="label" style="fill:#b95f5b" x="688" y="256">fix → recheck</text>
+<text class="label" x="18" y="38">Обязательные шаги перед любым параллельным запуском</text>
+<text class="node-sub" x="18" y="403">При исчерпании бюджета, попыток или обязательных доказательств — остановка с честным UNRESOLVED, а не фиктивным PASS.</text>
+</svg></div>
+<div class="flow-caption">Упрощённая схема: в реальности переходы между рискованными узлами тоже защищены gates, а не только последний результат. Пробный прогон проверяет необходимые gates до параллельного запуска фазы; поздние gates — перед первым зависимым использованием.</div>
+</div>
+<div class="checkgrid" style="margin-top:16px">
+<div class="metric"><div class="number">8 полей</div><div class="label">Контракт задачи: TASK, OUTPUT, CHECKS, SOURCES, SCOPE, LIMIT, BUDGET, REVIEW_POLICY</div></div>
+<div class="metric"><div class="number">Проверка</div><div class="label">Репрезентативный узел проходит цепочку фазы; каждый новый gate должен отклонить ошибочный пример до первого зависимого использования.</div></div>
+<div class="metric"><div class="number">≤ 3</div><div class="label">Возврата на исправление одного узла, не считая первоначальную реализацию</div></div>
+<div class="metric"><div class="number">≤ 5</div><div class="label">Практически применимых замечаний (actionable findings) от одного ревьюера за проверку</div></div>
+</div>
+</section>
+<section class="section" id="controls"><div class="section-header"><div class="eyebrow">04 / Гарантии</div><h2>Что значит «проверено»</h2><p>Модель не принимает собственную работу на веру. Она должна показать, какой именно сохранённый артефакт проверен, чем и с каким результатом.</p></div>
+<div class="two-cols">
+<div class="panel"><span class="tag blue">GATE</span><h3>Привязка к конкретной версии</h3><p>PASS фиксирует версии значимых входов, результата, контракта и проверяющего. Если они изменились, проверка и затронутые зависимые допуски пересматриваются.</p></div>
+<div class="panel"><span class="tag">DETERMINISTIC FIRST</span><h3>Код раньше экспертного мнения</h3><p>Сортировка, сравнение, подсчёт и тесты выполняются инструментами. Модель используется для неоднозначного суждения и поиска причин, а не для операций с единственным правильным ответом.</p></div>
+<div class="panel"><span class="tag amber">REVIEW</span><h3>Ревью соразмерно риску</h3><p>По умолчанию — исполнитель и детерминированный тест. Независимое ревью добавляется только когда риск оправдывает цену. Judge нужен при блокирующих противоречиях, а не после каждой пары мнений.</p></div>
+<div class="panel"><span class="tag blue">FILE OWNERSHIP</span><h3>Разделение владельцев состояния</h3><p>Во время Workflow проверяющие сохраняют отдельные доказательства; один агрегатор обновляет <code>checks.md</code>. Только корневой агент обновляет <code>progress.md</code> между фазами. Подробности восстановления — в <a href="#execution-modes">разделе 02</a>.</p></div>
+</div>
+<div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Категория</th><th>Пример</th><th>Что делает gate</th></tr></thead><tbody>
+<tr><td><span class="bad">HIGH</span></td><td>Неверный результат с серьёзными последствиями, сбой в нормальном сценарии, критическая ошибка безопасности</td><td><span class="bad">FAIL</span> — блокирует передачу результата дальше</td></tr>
+<tr><td><span class="warn-t">MEDIUM</span></td><td>Ошибка поведения на реалистичном пограничном случае</td><td><span class="bad">FAIL</span> — требует исправления или разрешённой смены контракта</td></tr>
+<tr><td><span class="good">LOW</span></td><td>Необязательная стилистика, формулировки, мелкие эффекты</td><td>В отчёт; автоматический цикл исправления не запускается</td></tr>
+<tr><td>CHECKS: failed / нет данных</td><td>Обязательный тест провалился, не запускался или результат недостоверен</td><td>FAIL или UNRESOLVED — никогда не PASS</td></tr>
+</tbody></table></div>
+<div class="callout warn"><strong>Нельзя «подогнать тесты» под результат.</strong> При ошибке контракта или тестового стенда проблема возвращается владельцу спецификации/проверки. Такая ошибка не считается неудачной попыткой исполнителя. Меняется контракт — пересматриваются затронутые downstream-допуски.</div>
+</section>
+<section class="section" id="budget"><div class="section-header"><div class="eyebrow">05 / Ресурсы</div><h2>Контроль расходов — всего дерева, не одного агента</h2><p>Измерять нужно полную стоимость успешного решения: оркестратор, исполнители, ревьюеры, повторы, внешние инструменты и завершение процесса.</p></div>
+<div class="diagram-shell"><h3>Что входит в общий бюджет</h3>
+<p class="scroll-tip">Диаграмму можно прокручивать горизонтально →</p><div class="diagram-scroll"><svg aria-label="Бюджет включает root, workers, reviewers, retries, tools и резерв закрытия" class="diagram" role="img" viewbox="0 0 1100 230">
+<rect fill="#f4f7f9" height="63" rx="12" stroke="#d9e0e6" width="1064" x="18" y="34"></rect>
+<rect fill="#306b9a" height="63" rx="12" width="198" x="18" y="34"></rect><rect fill="#358f89" height="63" width="320" x="216" y="34"></rect><rect fill="#bd9658" height="63" width="160" x="536" y="34"></rect><rect fill="#bd7673" height="63" width="124" x="696" y="34"></rect><rect fill="#7590a5" height="63" width="114" x="820" y="34"></rect><rect fill="#e3ece6" height="63" rx="12" width="148" x="934" y="34"></rect>
+<text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="117" y="71">Root</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="376" y="71">Workers</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="616" y="71">Review</text><text fill="white" font-size="17" font-weight="750" text-anchor="middle" x="758" y="71">Retries</text><text fill="white" font-size="15" font-weight="750" text-anchor="middle" x="877" y="71">Tools</text><text fill="#265744" font-size="16" font-weight="800" text-anchor="middle" x="1008" y="71">Reserve</text>
+<text class="node-sub" x="25" y="125">Доли на рисунке условны — это категории учёта, не рекомендуемые проценты.</text>
+<rect class="finish" height="57" rx="10" width="330" x="18" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="183" y="181">Измерено</text><rect class="risk" height="57" rx="10" width="330" x="387" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="552" y="181">Оценка</text><rect class="failed" height="57" rx="10" width="326" x="756" y="149"></rect><text class="node-title" font-size="16" text-anchor="middle" x="919" y="181">Неизвестно</text>
+</svg></div>
+</div>
+<div class="callout danger"><strong>Промпт не умеет физически остановить расходы.</strong> Если обещается жёсткий бюджет, нужен реальный счётчик и внешний механизм остановки. Без него лимит — только инструкция и оценка. Нельзя превращать стоимость API в «процент подписки» без отдельного наблюдаемого счётчика.</div>
+</section>
+<section class="section" id="start"><div class="section-header"><div class="eyebrow">06 / Запуск</div><h2>Как использовать в одном проекте</h2><p>Пакет располагается в корневой папке репозитория; он не изменяет пользовательские инструкции, глобальные настройки или файлы другого проекта.</p></div>
+<div class="steps">
+<div class="step"><h3>Распакуйте в корень нужного проекта</h3><p>Пути должны получиться именно такими: <code>.claude/skills/graph-task/SKILL.md</code>, <code>.claude/skills/graph-task/references/protocol.md</code> и <code>.claude/skills/graph-task/docs/guide.ru.html</code>. Не размещайте <code>.claude</code> внутри другой <code>.claude</code>. Английское руководство лежит рядом в <code>.claude/skills/graph-task/docs/guide.en.html</code>.</p></div>
+<div class="step"><h3>Откройте Claude Code в этом проекте</h3><p>Вызов <code>/graph-task</code> добавит инструкцию. Skill не вызывается агентом самовольно: установлен параметр <code>disable-model-invocation: true</code>.</p></div>
+<div class="step"><h3>Опишите задачу, критерии приёмки и границы</h3><p>Если бюджет и ограничения не определены, агент не должен изобретать «разрешение на расход». Он использует существующие разрешения и уточняет только существенные пробелы.</p></div>
+<div class="step"><h3>Сначала оцените граф и одобрите исполнение</h3><p>Граф сохраняется в <code>.agent-runs/&lt;task-id&gt;/graph.md</code>. Для режима B отдельно согласуйте фазу, максимальное число агентов, параллелизм и бюджет <strong>после предъявления графа</strong>. Далее — пробный прогон перед любым fan-out, исполнение, gates и отчёт.</p></div>
+</div>
+<div class="code">/graph-task Исправь регрессию в модуле авторизации.
+OUTPUT: исправленный код в текущем проекте.
+CHECKS: тесты авторизации проходят; нет регрессий по сессиям.
+SOURCES: существующий код, тесты и логи в репозитории.
+SCOPE: только модуль auth и его тесты.
+LIMIT: до 2 часов или 12 узлов.
+BUDGET: используй доступные счетчики; не утверждай hard cap без watchdog.
+REVIEW_POLICY: отдельная проверка при изменении безопасности.
+Сначала предложи режим A/B, запиши граф и запроси согласование.
+Если B — отдельно запроси разрешение на конкретную фазу, число агентов и параллелизм.</div>
+<div class="diagram-shell" style="margin-top:15px"><h3>Где лежат результаты конкретного запуска</h3>
+<div class="install-tree" style="max-width:610px">.agent-runs/
+└── auth-regression-001/
+    ├── graph.md          ← узлы, рёбра и критерии
+    ├── checks.md         ← пройденные/непройденные gates
+    ├── progress.md       ← состояние и следующий шаг
+    └── evidence/         ← проверяемые файлы и индекс</div>
+<p class="small subtle" style="margin-top:13px">Идентификатор запуска — пример. Конкретная структура индекса/материалов определяется задачей. Выделенная папка исключает перезапись отчётов соседних запусков. Для режима B только корневой агент записывает доступные run ID и путь JS в progress.md после возврата управления; неизвестные значения остаются unknown/pending.</p>
+</div>
+<div class="two-cols" style="margin-top:16px"><div class="note"><h3>Когда использовать</h3><p>Рефакторинг нескольких подсистем, миграция данных, интеграция с рисками, исследование с большим числом источников, сложные задачи, которые потребуется продолжать между сессиями.</p></div><div class="note"><h3>Когда не нужно</h3><p>Разовый ответ, простая правка, проверка одного файла. Обычного Claude Code с тестами часто достаточно. Даже при вызове Skill граф может иметь один узел, без дополнительных агентов.</p></div></div>
+</section>
+<section class="section" id="advisor"><div class="section-header"><div class="eyebrow">07 / Необязательная надстройка</div><h2>Advisor включается отдельно</h2><p>Советник не устанавливается этим архивом. Он может быть полезен при архитектурной неопределённости, но не должен незаметно умножать стоимость параллельной работы.</p></div>
+<div class="table-wrap"><table><thead><tr><th>Сценарий</th><th>Что рекомендовано</th><th>Почему</th></tr></thead><tbody>
+<tr><td>Рутинная реализация</td><td>Без Advisor</td><td>Меньше дополнительных чтений контекста; хватает тестов</td></tr>
+<tr><td>Сложное архитектурное решение</td><td>Advisor на ограниченный этап</td><td>Второе мнение до рискованного выбора</td></tr>
+<tr><td>Две повторные неудачи с неясной причиной</td><td>Advisor при совместимости моделей</td><td>Проверить причинную гипотезу, не продлевая слепые повторы</td></tr>
+<tr><td>Массовый fan-out</td><td>Не включать Advisor на весь запуск без анализа наследования</td><td>Не полагаться на неподтверждённое отключение у отдельных workers</td></tr>
+<tr><td>Приёмка готового кода</td><td>Tests/gates + риск-ревью</td><td>Мнение Advisor не является доказательством корректности</td></tr>
+</tbody></table></div>
+<p style="margin-top:18px">Для разового эксперимента запустите новую сессию с флагом, <em>если</em> выбранная пара моделей и ваш провайдер поддерживают Advisor:</p>
+<div class="code">cd /path/to/project
+claude --model sonnet --advisor opus</div>
+<p>Или включите его внутри Claude Code командой <code>/advisor opus</code>, но учтите: выбор через команду обычно сохраняется в пользовательском конфиге и может затронуть другие проекты. Флаг <code>--advisor</code> действует только для запущенной сессии. Вся работа Skill может выполняться и <strong>без Advisor</strong>.</p>
+<div class="callout warn"><strong>Проверяйте фактическую доступность:</strong> Advisor — экспериментальная функция с ограничениями по провайдеру и совместимости моделей. Конкретные модели, версии, тарифы и поведение могут измениться. См. <a href="https://code.claude.com/docs/en/advisor" rel="noreferrer" target="_blank">официальную документацию Advisor</a>.</div>
+</section>
+<section class="section"><div class="section-header"><div class="eyebrow">08 / Частые вопросы</div><h2>Короткие ответы</h2></div>
+<details><summary>Агент обязан читать этот HTML при каждом запуске?</summary><p>Нет. Агенту нужно читать нормативный <code>references/protocol.md</code>; HTML предназначен только для человека и для применения Skill не требуется.</p></details>
+<details><summary>Для одного проекта нужен глобальный CLAUDE.md?</summary><p>Нет. Skill находится внутри <code>project/.claude/skills/graph-task/</code>. Он не должен менять глобальные файлы. Существующие проектные инструкции сохраняются; <code>AGENTS.md</code> может обновляться только с разрешением.</p></details>
+<details><summary>Будет ли Claude автоматически создавать много субагентов?</summary><p>Нет. Для маленькой задачи допустим один узел и инструменты. Нативный Dynamic Workflow нужен только там, где сложность/параллельность оправдывает отдельный скрипт оркестрации.</p></details>
+<details><summary>Можно ли гарантировать ограничение стоимости одним промптом?</summary><p>Нет. Необходим внешний счётчик или watchdog с реальной возможностью остановить новые расходы. Если этого нет, оценка не называется жёстким лимитом.</p></details>
+<details><summary>Какие файлы переносить в новую сессию?</summary><p>См. раздел 02 «Два режима»: при новой сессии повторно прочитайте протокол, проверьте <code>graph.md</code>, <code>progress.md</code> и <code>checks.md</code>, затем подтвердите запуск оставшихся узлов.</p></details>
+</section>
+</main>
+<footer class="footer"><div class="wrap"><p style="margin:0 0 9px">Проект: <a href="https://github.com/falkolab/agent-graph-task" rel="noreferrer" target="_blank">GitHub</a> · <a href="https://github.com/falkolab/agent-graph-task/blob/main/README_ru.md" rel="noreferrer" target="_blank">README на русском</a></p><strong>Graph Task / человеческая документация</strong><p style="margin:8px 0">Это поясняющий материал, не нормативный протокол для агента. Рабочие правила — в <code>SKILL.md</code> и <code>references/protocol.md</code>.</p><p style="margin:0">Документация Claude Code: <a href="https://code.claude.com/docs/en/skills" rel="noreferrer" target="_blank">Skills</a> · <a href="https://code.claude.com/docs/en/workflows" rel="noreferrer noopener" target="_blank">Dynamic Workflows</a> · <a href="https://code.claude.com/docs/en/advisor" rel="noreferrer" target="_blank">Advisor</a></p></div></footer>
+</body>
+</html>
