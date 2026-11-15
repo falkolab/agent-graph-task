@@ -9,7 +9,15 @@ disable-model-invocation: true
 
 Task request: $ARGUMENTS
 
-**Mandatory policy loading:** on first invocation, after context compaction, and on resumption in this or another session, read the complete normative file at `${CLAUDE_SKILL_DIR}/references/protocol.md` **again** before further decisions, work, or accepting results. The short SKILL.md is not a substitute. After compaction do not assume previous file contents survived. See the Dynamic Workflow execution policy in §14.
+**Mandatory policy loading:** read the complete normative file at `${CLAUDE_SKILL_DIR}/references/protocol.md` before further decisions, work, or accepting results:
+
+- **first invocation** in a session — read it in full;
+- **after context compaction** — read it in full again; do not assume earlier file contents survived;
+- **continuing in a new session** — read it in full;
+- **continuing in the same session with context intact** — do not reread it;
+- **recovering an interrupted Workflow in the same session with context intact** — reread at least protocol §13–§14 and any section the recovery depends on; if context was lost, read the whole file.
+
+The short SKILL.md is not a substitute. See the Dynamic Workflow execution policy in §14.
 
 **Human documentation only:** `${CLAUDE_SKILL_DIR}/docs/guide.ru.html` and `${CLAUDE_SKILL_DIR}/docs/guide.en.html` explain the design to people. You do **not need to read them** to apply this skill. They are not normative and must not supply missing execution rules; open only when asked to discuss or edit documentation.
 
@@ -22,6 +30,8 @@ Bind `TASK`, `OUTPUT`, `CHECKS`, `SOURCES`, `SCOPE`, `LIMIT`, `BUDGET`, and `REV
 ## 2. Specify and approve the graph
 
 Decompose by required context, not folders; one node may suffice. Inventory the real input formats/versions before proposing new interface contracts. Specify inputs/outputs, dependencies, owners, acceptance checks, reviewers, limits and budget in `.agent-runs/<task-id>/graph.md`. Include the selected execution mode: **A (direct) or B (Dynamic Workflow)**. For mode B also specify bounded node subset/phase, agent count, maximum concurrent agents, estimated full-tree usage, checkpoints and the responsible writers/gates. Obtain the required plan approval before fan-out.
+
+**Lightweight path (protocol §4.1):** a single simple node with no external side effects may use a minimal baseline, a bounded change, the mandatory gate on the saved result, and a short record in `checks.md`/`progress.md`. Extra subagents, independent review, multi-node decomposition and an extended report are not required. Acceptance criteria, `SCOPE`/permissions and verification of the actual saved result are never relaxed.
 
 **Mode B requires separate explicit approval AFTER the graph is shown**, covering this Workflow's phase/subset, agent count, concurrency, expected cost/budget and permitted operations. Calling `/graph-task`, approving `graph.md` in principle, a saved plan, or an automatic tool-permission bypass does **not** grant that separate approval. Do not rely on Claude Code's per-run UI prompt to enforce this policy; it may be skipped in some permission modes. If approval is absent, stop at the proposed graph or use only already authorized direct work.
 
@@ -41,7 +51,7 @@ Before reusing any PASS, check **significant input versions, saved output, contr
 
 Before retrying any **external write**, verify its actual remote outcome and reuse the same idempotency key when supported; stop rather than blindly duplicate uncertain operations. Measure the full tree **per node** and overall: root, subagents, review, judge, retries, tools and in-flight work. Distinguish observed counters, estimates and unknown usage. A prompt cannot impose a hard spending cap; use an actual counter/watchdog or avoid a long autonomous Workflow when a hard cap is required. Stop before executing unapproved cost-bearing phases.
 
-Preserve `.agent-runs/<task-id>/graph.md`, `checks.md`, `progress.md`, versioned artifacts and an evidence/resource index. The root agent alone writes `progress.md` between Workflow runs/phases, after control returns; Workflow workers save assigned outputs and unique evidence, and one aggregator owns `checks.md` during the phase. Record real run IDs/script paths when returned, otherwise mark unknown/pending. In the persisted `progress.md` header record the **resolved absolute path** to the normative protocol (`${CLAUDE_SKILL_DIR}/references/protocol.md` as expanded when this skill is invoked), never a literal variable or an assumed project-relative path. If the stored path no longer exists after relocation, reinvoke `/graph-task` to resolve the current location before resuming. Prefer native resume in the **original** session; for a fresh session validate saved hashes and admissions, revoke invalid ones and execute only the remaining work under renewed authorization. After compaction/resumption reread the normative protocol before decisions.
+Preserve `.agent-runs/<task-id>/graph.md`, `checks.md`, `progress.md`, versioned artifacts and an evidence/resource index. The root agent alone writes `progress.md` between Workflow runs/phases, after control returns; Workflow workers save assigned outputs and unique evidence, and one aggregator owns `checks.md` during the phase. Record real run IDs/script paths when returned, otherwise mark unknown/pending. In the persisted `progress.md` header record the **resolved absolute path** to the normative protocol (`${CLAUDE_SKILL_DIR}/references/protocol.md` as expanded when this skill is invoked), never a literal variable or an assumed project-relative path. If the stored path no longer exists after relocation, reinvoke `/graph-task` to resolve the current location before resuming. Prefer native resume in the **original** session; for a fresh session validate saved hashes and admissions, revoke invalid ones and execute only the remaining work under renewed authorization. Reload the normative protocol according to the policy-loading rules above before further decisions.
 
 Return the requested deliverable plus PASS/FAIL/UNRESOLVED, check evidence, consumed versions, measured/unknown resources and exact next steps for unresolved work.
 
