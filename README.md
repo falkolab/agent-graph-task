@@ -36,11 +36,13 @@ The skill defines the task, checks, scope and budget before execution. It can ru
 
 - **Plan:** Define bounded nodes, dependencies, inputs, outputs, owners and acceptance checks in `graph.md`.
 - **Execute:** Use code for deterministic steps; delegate isolated work when it adds value. A Dynamic Workflow is an optional execution mechanism, not a second task graph.
-- **Verify:** Check saved artifacts and input versions before accepting results; record evidence in `checks.md`.
-- **Recover:** Preserve checkpoints in `progress.md`, revalidate relevant evidence, and resume remaining work.
+- **Verify:** Accept a result only with verifiable versions of its inputs, saved output, contract and checker; otherwise it stays unverified. Evidence, revoked admissions and spec gaps are recorded in `checks.md`.
+- **Recover:** Preserve checkpoints in `progress.md`, revalidate relevant evidence, and resume remaining work. A Workflow script is saved before launch so a resumed run can be checked against it.
 - **Control:** Respect authorized scope, retry limits and measured resource usage.
 
-The files `graph.md`, `checks.md` and `progress.md` are created for each task, not shipped as templates.
+The files `graph.md`, `checks.md` and `progress.md` are created for each task, not shipped as templates. A single simple node without external side effects takes a lightweight path: baseline, bounded change, mandatory gate, short record.
+
+> For small, straightforward tasks, planning and verification overhead may make this skill slower and more expensive than a regular agent session.
 
 ## Files
 
