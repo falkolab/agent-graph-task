@@ -15,7 +15,8 @@ Solve the task as a graph of bounded nodes, not as one uncontrolled long session
 
 ### 1.1. Agent response economy
 
-- A worker returns a compact structured summary: status, artifact paths, verification verdict, actionable findings, evidence paths and next action. Target about 400 output tokens; each finding with a reproduction comes on top, about 100 tokens per finding. Never cut evidence to fit the limit. Keep details in artifacts, not in the reply.
+- A worker returns a compact structured summary: status, artifact paths, verification verdict, actionable findings, evidence paths and next action. Target about 400 output tokens; each finding with a reproduction comes on top, about 100 tokens per finding. Never cut evidence to fit the limit.
+- Write to files only what the protocol requires as evidence (§9) or what the root explicitly asks for; do not produce extra reports.
 
 ## 2. Experimental principles
 
@@ -84,7 +85,7 @@ Not required: additional subagents, independent review, multi-node decomposition
 
 Before the **first parallel launch of a phase**, run **one representative real node** through that phase's actual chain (tools, gate parsers, reviewer/judge interfaces, schemas, labels). Test every **new or changed gate type this phase needs**, including a known-invalid sample it must reject. Test a later-stage gate whose inputs do not exist yet **before its consumer's first launch**, not in advance of all independent nodes.
 
-Keep the real inputs/results. An untested required gate stays `unverified` and blocks dependent execution; **fix harness/contract errors first**. A successfully tested unchanged gate does not need another preflight; test it again when the checker changes. Harness/contract failures go back to the harness/contract owner and do not count as a defect of a correct producer result. **Reuse the accepted useful trial result** where applicable. This spends the agreed budget.
+Keep the real inputs/results. An untested required gate stays `unverified` and blocks dependent execution; **fix harness/contract errors first**. A successfully tested unchanged gate does not need another preflight; test it again when the checker changes. Harness/contract failures go back to the harness/contract owner and do not count as a defect of a correct producer result. **Reuse the accepted useful trial result** where applicable.
 
 ## 9. Layer 5 — gates and defect severity
 

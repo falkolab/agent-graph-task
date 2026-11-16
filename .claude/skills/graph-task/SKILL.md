@@ -19,8 +19,6 @@ Task request: $ARGUMENTS
 
 The short SKILL.md is not a substitute. See the Dynamic Workflow execution policy in §14.
 
-**Human documentation only:** `${CLAUDE_SKILL_DIR}/docs/guide.ru.html` and `${CLAUDE_SKILL_DIR}/docs/guide.en.html` explain the design to people. You do **not need to read them** to apply this skill. They are not normative and must not supply missing execution rules; open only when asked to discuss or edit documentation.
-
 Never overwrite existing project instructions, change `~/.claude/`, or enable Advisor/Ultracode as an incidental side effect. Keep task changes within the authorized project, regardless of whether this skill is installed globally or in the project.
 
 ## 1. Establish the task contract
@@ -39,7 +37,7 @@ Decompose by required context, not folders; one node may suffice. Inventory the 
 
 Mode A: Claude executes nodes directly, calls deterministic commands/code and delegates to fresh bounded subagents only when useful. Mode B: an approved JavaScript Dynamic Workflow script orchestrates the selected subset, with its worker/gate agents writing evidence. Save the script to `.agent-runs/<task-id>/workflow.js`, record its path and sha256 bound to the `graph.md` revision in `progress.md`, and launch it via `scriptPath`; on recovery resume the same run only if both hashes still match. The script must pass expected versions of significant inputs, contract/`CHECKS` and evaluator to each gate and to the aggregator, and the aggregator admits only evidence it has validated against the files (protocol §14.2–§14.3); the root agent must not concurrently edit files owned by the running Workflow. Do not start a second controller for the same nodes. In **both** modes apply the same normative acceptance requirements, including §8 trial, §9 gates, §10 correction limits, §12 budget accounting, and §14 Workflow-specific procedures.
 
-Keep root context concise: put raw media, broad source reads and large logs in bounded workers/tools; retrieve evidence paths, coverage and summaries instead of large payloads. Workers return a compact structured summary (target ~400 output tokens plus ~100 per reproduced finding; never cut evidence to fit) and keep details in artifacts (protocol §1.1). Do not turn `ultracode` on automatically.
+Keep root context concise: put raw media, broad source reads and large logs in bounded workers/tools; retrieve evidence paths, coverage and summaries instead of large payloads. Workers return a compact structured summary (target ~400 output tokens plus ~100 per reproduced finding; never cut evidence to fit); they write to files only evidence required by gates/`checks.md` or requested by the root, no extra reports (protocol §1.1). Do not turn `ultracode` on automatically.
 
 ## 4. Evidence, preflight, and correction
 
